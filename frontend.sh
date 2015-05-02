@@ -1,10 +1,15 @@
 #!/bin/sh
 
 # コマンドラインツール
+# license agreements が表示されるので agree を入力してEnter
 xcode-select --install
+sudo xcodebuild -license
 
-# Homebrew
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# Homebrew-file
+# homebrewとbrew-caskはBrew-fileと同時にインストールされる
+# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+curl -fsSL https://raw.github.com/rcmdnk/homebrew-file/install/install.sh |sh
+export HOMEBREW_CASK_OPTS="--appdir=/Applications --caskroom=/usr/local/Caskroom"
 
 # 最新のバージョンに更新
 brew update
@@ -16,20 +21,23 @@ brew doctor
 
 # Homebrew-Cask
 # 通常のアプリをHomebrewで入れられるようになる
-brew install caskroom/cask/brew-cask
+# brew install caskroom/cask/brew-cask
 
 # Homebrew-file
 # brewで入れたアプリの管理がとても楽になる
-brew tap rcmdnk/file
-brew install brew-file
+# brew tap rcmdnk/file
+# brew install brew-file
 
-# とりあえずzsh 設定は後で
+# zsh
 brew install zsh
 brew install zsh-completions
 
 # git
 $ brew install git
 $ brew install git-flow
+
+# openssh
+brew install openssl
 
 # anyenvのインストール
 git clone https://github.com/riywo/anyenv ~/.anyenv
@@ -44,42 +52,36 @@ echo 'eval "$(anyenv init -)"' >> ~/.zshrc
 
 # shell再起動 
 exec $SHELL
- 
+
 # anyenvのアップデートを入れる
 mkdir -p $(anyenv root)/plugins
 git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
- 
+
 # anyenvをアップデートする
 anyenv update
- 
-# ruby をインストールするのに足りないものを入れる
-brew install openssl
- 
+
 # anyenvでrbenvを入れる
 anyenv install rbenv
- 
-# ruby のインストール (2.2.2)
+
+# ruby のインストール
 rbenv install 2.2.2
 rbenv rehash
 
-update_rubygems
-gem update
-gem clean
+# update_rubygems
+# gem update
+# gem clean
 
 # node.js のインストール
 anyenv install ndenv
 ndenv install v0.12.2
 ndenv rehash
 
-npm update -g
-npm update -g npm
+# npm update -g
+# npm update -g npm
 
 # デフォルトのruby,npmのversionを指定する
-# rbenv global 2.2.2
-# ndenv global v0.12.2
+rbenv global 2.2.2
+ndenv global v0.12.2
 
-# compass(sass) のインストール
-# gem install compass
-
-# gruntとかgulpとか
-# npm install -g grunt-cli phantomjs gulp
+# ruby-gems, node-npm, brewfile は
+# 別途インストールスクリプトを走らせる
